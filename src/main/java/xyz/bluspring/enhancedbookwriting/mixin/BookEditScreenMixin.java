@@ -76,6 +76,9 @@ public abstract class BookEditScreenMixin extends Screen {
             if (this.pages.size() == 0)
                 this.pages.add("");
 
+            if (this.currentPage != 0)
+                this.currentPage--;
+
             this.isModified = true;
 
             this.updateButtonVisibility();
