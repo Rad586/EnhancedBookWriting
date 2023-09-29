@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "id": "enhancedbookwriting",
+  "version": "${version}",
+  "name": "EnhancedBookWriting",
+  "description": "Enhance your book writing experience! Fully client-side mod.",
+  "authors": [
+    "BluSpring"
+  ],
+  "contact": {
+    "repo": "https://github.com/BluSpring/EnhancedBookWriting"
+  },
+  "license": "MIT",
+  "icon": "assets/enhancedbookwriting/textures/icon.png",
+  "environment": "client",
+  "entrypoints": {
+  },
+  "mixins": [
+    "enhancedbookwriting.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "minecraft": ">=1.19"
+  }
+}
