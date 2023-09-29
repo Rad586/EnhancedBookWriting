@@ -44,6 +44,8 @@ public abstract class BookEditScreenMixin extends Screen {
     @Inject(method = "updateButtonVisibility", at = @At("TAIL"))
     private void ebw$updateButtons(CallbackInfo ci) {
         this.appendPage.visible = this.prependPage.visible = this.deletePage.visible = !this.isSigning;
+
+        this.appendPage.active = this.prependPage.active = this.pages.size() < 100;
     }
 
     @Inject(method = "init", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/inventory/BookEditScreen;updateButtonVisibility()V"))
