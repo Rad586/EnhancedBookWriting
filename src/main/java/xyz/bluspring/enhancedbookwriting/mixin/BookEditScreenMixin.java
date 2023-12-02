@@ -3,6 +3,7 @@ package xyz.bluspring.enhancedbookwriting.mixin;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.ImageButton;
 import net.minecraft.client.gui.components.Tooltip;
+import net.minecraft.client.gui.components.WidgetSprites;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.BookEditScreen;
 import net.minecraft.network.chat.Component;
@@ -20,18 +21,18 @@ import java.util.List;
 @Mixin(BookEditScreen.class)
 public abstract class BookEditScreenMixin extends Screen {
     @Unique
-    private static final ResourceLocation DELETE_PAGE = new ResourceLocation("enhancedbookwriting", "textures/gui/remove_page.png");
+    private static final ResourceLocation DELETE_PAGE = new ResourceLocation("enhancedbookwriting", "book/remove_page");
 
     @Unique
-    private static final ResourceLocation FLIP_TO_FIRST = new ResourceLocation("enhancedbookwriting", "textures/gui/flip_to_first.png");
+    private static final ResourceLocation FLIP_TO_FIRST = new ResourceLocation("enhancedbookwriting", "book/flip_to_first");
 
     @Unique
-    private static final ResourceLocation FLIP_TO_LAST = new ResourceLocation("enhancedbookwriting", "textures/gui/flip_to_last.png");
+    private static final ResourceLocation FLIP_TO_LAST = new ResourceLocation("enhancedbookwriting", "book/flip_to_last");
 
     @Unique
-    private static final ResourceLocation PREPEND_PAGE = new ResourceLocation("enhancedbookwriting", "textures/gui/prepend_page.png");
+    private static final ResourceLocation PREPEND_PAGE = new ResourceLocation("enhancedbookwriting", "book/prepend_page");
     @Unique
-    private static final ResourceLocation APPEND_PAGE = new ResourceLocation("enhancedbookwriting", "textures/gui/append_page.png");
+    private static final ResourceLocation APPEND_PAGE = new ResourceLocation("enhancedbookwriting", "book/append_page");
 
     @Shadow private boolean isSigning;
 
@@ -67,7 +68,9 @@ public abstract class BookEditScreenMixin extends Screen {
         // TODO: Image Buttons don't really have the ability to be selected with keyboard-only.
         //       can we fix that somehow?
 
-        this.prependPage = addRenderableWidget(new ImageButton(this.width / 2 - 185 + 50 + 25, 160, 16, 16, 0, 0, 0, PREPEND_PAGE, 16, 16, (button) -> {
+        // TODO: add hovered image
+
+        this.prependPage = addRenderableWidget(new ImageButton(this.width / 2 - 185 + 50 + 25, 160, 16, 16, new WidgetSprites(PREPEND_PAGE, PREPEND_PAGE), (button) -> {
             if (this.getNumPages() < 100) {
                 this.pages.add(this.currentPage, "");
                 this.isModified = true;
@@ -80,7 +83,7 @@ public abstract class BookEditScreenMixin extends Screen {
         ));
         this.prependPage.setTooltip(Tooltip.create(this.prependPage.getMessage()));
 
-        this.appendPage = addRenderableWidget(new ImageButton(this.width / 2 + 70 + 15, 160, 16, 16, 0, 0, 0, APPEND_PAGE, 16, 16, (button) -> {
+        this.appendPage = addRenderableWidget(new ImageButton(this.width / 2 + 70 + 15, 160, 16, 16, new WidgetSprites(APPEND_PAGE, APPEND_PAGE), (button) -> {
             if (this.getNumPages() < 100) {
                 this.pages.add(this.currentPage + 1, "");
                 this.isModified = true;
@@ -94,7 +97,7 @@ public abstract class BookEditScreenMixin extends Screen {
         ));
         this.appendPage.setTooltip(Tooltip.create(this.appendPage.getMessage()));
 
-        this.deletePage = addRenderableWidget(new ImageButton(this.width - 25, this.height - 25, 16, 16, 0, 0, 0, DELETE_PAGE, 16, 16, (button) -> {
+        this.deletePage = addRenderableWidget(new ImageButton(this.width - 25, this.height - 25, 16, 16, new WidgetSprites(DELETE_PAGE, DELETE_PAGE), (button) -> {
             this.pages.remove(this.currentPage);
             if (this.pages.isEmpty())
                 this.pages.add("");
@@ -111,7 +114,7 @@ public abstract class BookEditScreenMixin extends Screen {
         ));
         this.deletePage.setTooltip(Tooltip.create(this.deletePage.getMessage()));
 
-        this.flipToFirstPage = addRenderableWidget(new ImageButton(this.width / 2 - 185 + 50 + 25, 140, 16, 16, 0, 0, 0, FLIP_TO_FIRST, 16, 16, (button) -> {
+        this.flipToFirstPage = addRenderableWidget(new ImageButton(this.width / 2 - 185 + 50 + 25, 140, 16, 16, new WidgetSprites(FLIP_TO_FIRST, FLIP_TO_LAST), (button) -> {
             this.currentPage = 0;
 
             this.updateButtonVisibility();
@@ -121,7 +124,7 @@ public abstract class BookEditScreenMixin extends Screen {
         ));
         this.flipToFirstPage.setTooltip(Tooltip.create(this.flipToFirstPage.getMessage()));
 
-        this.flipToLastPage = addRenderableWidget(new ImageButton(this.width / 2 + 70 + 15, 140, 16, 16, 0, 0, 0, FLIP_TO_LAST, 16, 16, (button) -> {
+        this.flipToLastPage = addRenderableWidget(new ImageButton(this.width / 2 + 70 + 15, 140, 16, 16, new WidgetSprites(FLIP_TO_LAST, FLIP_TO_LAST), (button) -> {
             this.currentPage = this.pages.size() - 1;
 
             this.updateButtonVisibility();
