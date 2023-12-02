@@ -21,6 +21,17 @@ public abstract class BookEditScreenMixin extends Screen {
     @Unique
     private static final ResourceLocation DELETE_PAGE = new ResourceLocation("enhancedbookwriting", "textures/gui/remove_page.png");
 
+    @Unique
+    private static final ResourceLocation FLIP_TO_FIRST = new ResourceLocation("enhancedbookwriting", "textures/gui/flip_to_first.png");
+
+    @Unique
+    private static final ResourceLocation FLIP_TO_LAST = new ResourceLocation("enhancedbookwriting", "textures/gui/flip_to_last.png");
+
+    @Unique
+    private static final ResourceLocation PREPEND_PAGE = new ResourceLocation("enhancedbookwriting", "textures/gui/prepend_page.png");
+    @Unique
+    private static final ResourceLocation APPEND_PAGE = new ResourceLocation("enhancedbookwriting", "textures/gui/append_page.png");
+
     @Shadow private boolean isSigning;
 
     @Shadow protected abstract int getNumPages();
@@ -36,6 +47,8 @@ public abstract class BookEditScreenMixin extends Screen {
     @Unique private Button appendPage;
     @Unique private Button prependPage;
     @Unique private Button deletePage;
+    @Unique private Button flipToFirstPage;
+    @Unique private Button flipToLastPage;
 
     protected BookEditScreenMixin(Component component) {
         super(component);
@@ -43,14 +56,30 @@ public abstract class BookEditScreenMixin extends Screen {
 
     @Inject(method = "updateButtonVisibility", at = @At("TAIL"))
     private void ebw$updateButtons(CallbackInfo ci) {
-        this.appendPage.visible = this.prependPage.visible = this.deletePage.visible = !this.isSigning;
+        this.appendPage.visible = this.prependPage.visible = this.deletePage.visible = this.flipToFirstPage.visible = this.flipToLastPage.visible = !this.isSigning;
 
         this.appendPage.active = this.prependPage.active = this.pages.size() < 100;
     }
 
     @Inject(method = "init", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/inventory/BookEditScreen;updateButtonVisibility()V"))
     private void ebw$initButtons(CallbackInfo ci) {
-        this.appendPage = addRenderableWidget(Button.builder(Component.literal("Append Page"), (button) -> {
+        // TODO: Image Buttons don't really have the ability to be selected with keyboard-only.
+        //       can we fix that somehow?
+
+        this.prependPage = addRenderableWidget(new ImageButton(this.width / 2 - 185 + 50 + 25, 160, 16, 16, 0, 0, 0, PREPEND_PAGE, 16, 16, (button) -> {
+            if (this.getNumPages() < 100) {
+                this.pages.add(this.currentPage, "");
+                this.isModified = true;
+
+                this.updateButtonVisibility();
+                this.clearDisplayCacheAfterPageChange();
+            }
+        },
+                (button, poseStack, x, y) -> this.renderTooltip(poseStack, Component.literal("Prepend Page"), x, y),
+                Component.literal("Prepend Page")
+        ));
+
+        this.appendPage = addRenderableWidget(new ImageButton(this.width / 2 + 70 + 15, 160, 16, 16, 0, 0, 0, APPEND_PAGE, 16, 16, (button) -> {
             if (this.getNumPages() < 100) {
                 this.pages.add(this.currentPage + 1, "");
                 this.isModified = true;
@@ -59,21 +88,14 @@ public abstract class BookEditScreenMixin extends Screen {
                 this.updateButtonVisibility();
                 this.clearDisplayCacheAfterPageChange();
             }
-        }).bounds(this.width / 2 + 70 + 15, 159, 98, 20).build());
+        },
+                (button, poseStack, x, y) -> this.renderTooltip(poseStack, Component.literal("Append Page"), x, y),
+                Component.literal("Append Page")
+        ));
 
-        this.prependPage = addRenderableWidget(Button.builder(Component.literal("Prepend Page"), (button) -> {
-            if (this.getNumPages() < 100) {
-                this.pages.add(this.currentPage, "");
-                this.isModified = true;
-
-                this.updateButtonVisibility();
-                this.clearDisplayCacheAfterPageChange();
-            }
-        }).bounds(this.width / 2 - 185, 159, 98, 20).build());
-
-        this.deletePage = addRenderableWidget(new ImageButton(this.width - 25, this.height - 25, 20, 20, 0, 0, 0, DELETE_PAGE, 16, 16, (button) -> {
+        this.deletePage = addRenderableWidget(new ImageButton(this.width - 25, this.height - 25, 16, 16, 0, 0, 0, DELETE_PAGE, 16, 16, (button) -> {
             this.pages.remove(this.currentPage);
-            if (this.pages.size() == 0)
+            if (this.pages.isEmpty())
                 this.pages.add("");
 
             if (this.currentPage != 0)
@@ -83,6 +105,29 @@ public abstract class BookEditScreenMixin extends Screen {
 
             this.updateButtonVisibility();
             this.clearDisplayCacheAfterPageChange();
-        }, Component.literal("Delete Page")));
+        },
+                (button, poseStack, x, y) -> this.renderTooltip(poseStack, Component.literal("Delete Page"), x, y),
+                Component.literal("Delete Page")
+        ));
+
+        this.flipToFirstPage = addRenderableWidget(new ImageButton(this.width / 2 - 185 + 50 + 25, 140, 16, 16, 0, 0, 0, FLIP_TO_FIRST, 16, 16, (button) -> {
+            this.currentPage = 0;
+
+            this.updateButtonVisibility();
+            this.clearDisplayCacheAfterPageChange();
+        },
+                (button, poseStack, x, y) -> this.renderTooltip(poseStack, Component.literal("Flip to First Page"), x, y),
+                Component.literal("Flip to First Page")
+        ));
+
+        this.flipToLastPage = addRenderableWidget(new ImageButton(this.width / 2 + 70 + 15, 140, 16, 16, 0, 0, 0, FLIP_TO_LAST, 16, 16, (button) -> {
+            this.currentPage = this.pages.size() - 1;
+
+            this.updateButtonVisibility();
+            this.clearDisplayCacheAfterPageChange();
+        },
+                (button, poseStack, x, y) -> this.renderTooltip(poseStack, Component.literal("Flip to Last Page"), x, y),
+                Component.literal("Flip to Last Page")
+        ));
     }
 }
