@@ -2,6 +2,7 @@ package xyz.bluspring.enhancedbookwriting.mixin;
 
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.ImageButton;
+import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.BookEditScreen;
 import net.minecraft.network.chat.Component;
@@ -75,9 +76,9 @@ public abstract class BookEditScreenMixin extends Screen {
                 this.clearDisplayCacheAfterPageChange();
             }
         },
-                (button, poseStack, x, y) -> this.renderTooltip(poseStack, Component.literal("Prepend Page"), x, y),
                 Component.literal("Prepend Page")
         ));
+        this.prependPage.setTooltip(Tooltip.create(this.prependPage.getMessage()));
 
         this.appendPage = addRenderableWidget(new ImageButton(this.width / 2 + 70 + 15, 160, 16, 16, 0, 0, 0, APPEND_PAGE, 16, 16, (button) -> {
             if (this.getNumPages() < 100) {
@@ -89,9 +90,9 @@ public abstract class BookEditScreenMixin extends Screen {
                 this.clearDisplayCacheAfterPageChange();
             }
         },
-                (button, poseStack, x, y) -> this.renderTooltip(poseStack, Component.literal("Append Page"), x, y),
                 Component.literal("Append Page")
         ));
+        this.appendPage.setTooltip(Tooltip.create(this.appendPage.getMessage()));
 
         this.deletePage = addRenderableWidget(new ImageButton(this.width - 25, this.height - 25, 16, 16, 0, 0, 0, DELETE_PAGE, 16, 16, (button) -> {
             this.pages.remove(this.currentPage);
@@ -106,9 +107,9 @@ public abstract class BookEditScreenMixin extends Screen {
             this.updateButtonVisibility();
             this.clearDisplayCacheAfterPageChange();
         },
-                (button, poseStack, x, y) -> this.renderTooltip(poseStack, Component.literal("Delete Page"), x, y),
                 Component.literal("Delete Page")
         ));
+        this.deletePage.setTooltip(Tooltip.create(this.deletePage.getMessage()));
 
         this.flipToFirstPage = addRenderableWidget(new ImageButton(this.width / 2 - 185 + 50 + 25, 140, 16, 16, 0, 0, 0, FLIP_TO_FIRST, 16, 16, (button) -> {
             this.currentPage = 0;
@@ -116,9 +117,9 @@ public abstract class BookEditScreenMixin extends Screen {
             this.updateButtonVisibility();
             this.clearDisplayCacheAfterPageChange();
         },
-                (button, poseStack, x, y) -> this.renderTooltip(poseStack, Component.literal("Flip to First Page"), x, y),
                 Component.literal("Flip to First Page")
         ));
+        this.flipToFirstPage.setTooltip(Tooltip.create(this.flipToFirstPage.getMessage()));
 
         this.flipToLastPage = addRenderableWidget(new ImageButton(this.width / 2 + 70 + 15, 140, 16, 16, 0, 0, 0, FLIP_TO_LAST, 16, 16, (button) -> {
             this.currentPage = this.pages.size() - 1;
@@ -126,8 +127,8 @@ public abstract class BookEditScreenMixin extends Screen {
             this.updateButtonVisibility();
             this.clearDisplayCacheAfterPageChange();
         },
-                (button, poseStack, x, y) -> this.renderTooltip(poseStack, Component.literal("Flip to Last Page"), x, y),
                 Component.literal("Flip to Last Page")
         ));
+        this.flipToLastPage.setTooltip(Tooltip.create(this.flipToLastPage.getMessage()));
     }
 }
