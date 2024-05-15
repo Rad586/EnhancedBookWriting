@@ -76,7 +76,7 @@ public abstract class BookEditScreenMixin extends Screen {
                 this.clearDisplayCacheAfterPageChange();
             }
         },
-                Component.literal("Prepend Page")
+                Component.translatable("enhancedbookwriting.prepend")
         ));
         this.prependPage.setTooltip(Tooltip.create(this.prependPage.getMessage()));
 
@@ -90,7 +90,7 @@ public abstract class BookEditScreenMixin extends Screen {
                 this.clearDisplayCacheAfterPageChange();
             }
         },
-                Component.literal("Append Page")
+                Component.translatable("enhancedbookwriting.append")
         ));
         this.appendPage.setTooltip(Tooltip.create(this.appendPage.getMessage()));
 
@@ -107,7 +107,7 @@ public abstract class BookEditScreenMixin extends Screen {
             this.updateButtonVisibility();
             this.clearDisplayCacheAfterPageChange();
         },
-                Component.literal("Delete Page")
+                Component.translatable("enhancedbookwriting.delete")
         ));
         this.deletePage.setTooltip(Tooltip.create(this.deletePage.getMessage()));
 
@@ -117,7 +117,7 @@ public abstract class BookEditScreenMixin extends Screen {
             this.updateButtonVisibility();
             this.clearDisplayCacheAfterPageChange();
         },
-                Component.literal("Flip to First Page")
+                Component.translatable("enhancedbookwriting.flip_to_first")
         ));
         this.flipToFirstPage.setTooltip(Tooltip.create(this.flipToFirstPage.getMessage()));
 
@@ -127,7 +127,7 @@ public abstract class BookEditScreenMixin extends Screen {
             this.updateButtonVisibility();
             this.clearDisplayCacheAfterPageChange();
         },
-                Component.literal("Flip to Last Page")
+                Component.translatable("enhancedbookwriting.flip_to_last")
         ));
         this.flipToLastPage.setTooltip(Tooltip.create(this.flipToLastPage.getMessage()));
     }
