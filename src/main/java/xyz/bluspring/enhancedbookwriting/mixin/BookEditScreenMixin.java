@@ -76,7 +76,7 @@ public abstract class BookEditScreenMixin extends Screen {
             }
         },
                 (button, poseStack, x, y) -> this.renderTooltip(poseStack, Component.literal("Prepend Page"), x, y),
-                Component.literal("Prepend Page")
+                Component.translatable("enhancedbookwriting.prepend")
         ));
 
         this.appendPage = addRenderableWidget(new ImageButton(this.width / 2 + 70 + 15, 160, 16, 16, 0, 0, 0, APPEND_PAGE, 16, 16, (button) -> {
@@ -90,7 +90,7 @@ public abstract class BookEditScreenMixin extends Screen {
             }
         },
                 (button, poseStack, x, y) -> this.renderTooltip(poseStack, Component.literal("Append Page"), x, y),
-                Component.literal("Append Page")
+                Component.translatable("enhancedbookwriting.append")
         ));
 
         this.deletePage = addRenderableWidget(new ImageButton(this.width - 25, this.height - 25, 16, 16, 0, 0, 0, DELETE_PAGE, 16, 16, (button) -> {
@@ -107,7 +107,7 @@ public abstract class BookEditScreenMixin extends Screen {
             this.clearDisplayCacheAfterPageChange();
         },
                 (button, poseStack, x, y) -> this.renderTooltip(poseStack, Component.literal("Delete Page"), x, y),
-                Component.literal("Delete Page")
+                Component.translatable("enhancedbookwriting.delete")
         ));
 
         this.flipToFirstPage = addRenderableWidget(new ImageButton(this.width / 2 - 185 + 50 + 25, 140, 16, 16, 0, 0, 0, FLIP_TO_FIRST, 16, 16, (button) -> {
@@ -117,7 +117,7 @@ public abstract class BookEditScreenMixin extends Screen {
             this.clearDisplayCacheAfterPageChange();
         },
                 (button, poseStack, x, y) -> this.renderTooltip(poseStack, Component.literal("Flip to First Page"), x, y),
-                Component.literal("Flip to First Page")
+                Component.translatable("enhancedbookwriting.flip_to_first")
         ));
 
         this.flipToLastPage = addRenderableWidget(new ImageButton(this.width / 2 + 70 + 15, 140, 16, 16, 0, 0, 0, FLIP_TO_LAST, 16, 16, (button) -> {
@@ -127,7 +127,7 @@ public abstract class BookEditScreenMixin extends Screen {
             this.clearDisplayCacheAfterPageChange();
         },
                 (button, poseStack, x, y) -> this.renderTooltip(poseStack, Component.literal("Flip to Last Page"), x, y),
-                Component.literal("Flip to Last Page")
+                Component.translatable("enhancedbookwriting.flip_to_last")
         ));
     }
 }
